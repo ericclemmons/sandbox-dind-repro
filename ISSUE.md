@@ -13,7 +13,7 @@ The Sandbox container starts and `sandbox.exec(...)` works, but Docker is not av
 Repository:
 
 ```text
-<repo-url>
+https://github.com/ericclemmons/sandbox-dind-repro
 ```
 
 Run locally:
