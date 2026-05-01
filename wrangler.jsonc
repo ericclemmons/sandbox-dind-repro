@@ -5,26 +5,26 @@
   "compatibility_date": "2026-04-30",
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
-    "enabled": true
+    "enabled": true,
   },
   "containers": [
     {
       "class_name": "Sandbox",
-      "image": "./Dockerfile"
-    }
+      "image": "./Dockerfile",
+    },
   ],
   "durable_objects": {
     "bindings": [
       {
         "name": "Sandbox",
-        "class_name": "Sandbox"
-      }
-    ]
+        "class_name": "Sandbox",
+      },
+    ],
   },
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["Sandbox"]
-    }
-  ]
+      "new_sqlite_classes": ["Sandbox"],
+    },
+  ],
 }

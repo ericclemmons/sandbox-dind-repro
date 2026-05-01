@@ -1,12 +1,12 @@
 {
   "name": "sandbox-dind-repro",
   "private": true,
-  "packageManager": "pnpm@10.33.2",
   "type": "module",
   "scripts": {
     "check": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "sh -c 'node scripts/docker-privileged-proxy.mjs & proxy=$!; trap \"kill $proxy\" EXIT INT TERM; socket=\"$PWD/.wrangler/docker-privileged.sock\"; for i in $(seq 1 100); do [ -S \"$socket\" ] && break; sleep 0.1; done; [ -S \"$socket\" ] || { echo \"Docker proxy socket not found at $socket.\"; exit 1; }; DOCKER_HOST=\"unix://$socket\" wrangler dev --port 8787'",
+    "dev:docker-proxy": "node scripts/docker-privileged-proxy.mjs",
     "types": "wrangler types"
   },
   "dependencies": {
@@ -16,5 +16,6 @@
   "devDependencies": {
     "@types/node": "^24.10.2",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "pnpm@10.33.2"
 }

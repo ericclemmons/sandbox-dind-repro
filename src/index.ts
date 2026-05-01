@@ -82,7 +82,9 @@ CMD ["echo", "Hello from Docker!"]
 `,
       );
 
-      const build = await sandbox.exec("docker build --network=host -t sandbox-dind-smoke /workspace");
+      const build = await sandbox.exec(
+        "docker build --network=host -t sandbox-dind-smoke /workspace",
+      );
 
       if (!build.success) {
         return Response.json({ step: "build", ...build }, { status: 500 });

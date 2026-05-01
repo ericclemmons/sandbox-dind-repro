@@ -59,7 +59,7 @@ Then `sandbox.exec("docker version")` should show both Docker client and server 
 `/processes` before manual startup:
 
 ```json
-{"processes":[]}
+{ "processes": [] }
 ```
 
 `/start-docker` manually starts `/home/rootless/boot-docker-for-dind.sh`, but logs include:

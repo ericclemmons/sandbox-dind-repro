@@ -14,6 +14,16 @@ pnpm install
 pnpm deploy
 ```
 
+## Local Dev With Docker-in-Docker
+
+Local Wrangler does not currently start Worker containers with the privileges Docker-in-Docker needs. For local repro testing, `pnpm dev` starts a Docker API proxy, waits for its Unix socket, points Wrangler at it with `DOCKER_HOST`, and starts Wrangler on port `8787`:
+
+```bash
+pnpm dev
+```
+
+The proxy listens at `.wrangler/docker-privileged.sock`, forwards requests to `DOCKER_SOCKET`, the active Docker context socket, or `/var/run/docker.sock`, and injects `HostConfig.Privileged=true` into `POST /containers/create` requests.
+
 ## Test
 
 Replace `<worker-url>` with the deployed Worker URL.
@@ -34,4 +44,4 @@ Expected behavior:
 - `/docker-run` builds with `--network=host` and runs the image with `--network=host`, returning `Hello from Docker!`.
 - `/destroy` destroys the named Sandbox so the next request starts a fresh container.
 
-Local Wrangler currently fails in this project before Docker is usable inside Sandbox, with no `/var/run/docker.sock` and rootlesskit errors when the startup script is invoked manually.
+Without the local proxy workaround, Wrangler starts Sandbox containers without enough privilege for Docker-in-Docker, so Docker never becomes usable inside Sandbox.
