@@ -14,7 +14,7 @@ COPY --from=docker.io/cloudflare/sandbox:0.9.2-musl /usr/lib/libreadline.so.8.2 
 # iptables disabled, waits for readiness, then keeps running
 RUN printf '#!/bin/sh\n\
   set -eu\n\
-  dockerd-entrypoint.sh dockerd --iptables=false --ip6tables=false &\n\
+  dockerd-entrypoint.sh dockerd --iptables=false --ip6tables=false --exec-opt native.cgroupdriver=cgroupfs &\n\
   until docker version >/dev/null 2>&1; do sleep 0.2; done\n\
   echo "Docker is ready"\n\
   wait\n' > /home/rootless/boot-docker-for-dind.sh && chmod +x /home/rootless/boot-docker-for-dind.sh
