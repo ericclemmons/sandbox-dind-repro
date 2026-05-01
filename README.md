@@ -23,6 +23,7 @@ curl -sS <worker-url>/docker-version
 curl -sS <worker-url>/processes
 curl -sS <worker-url>/start-docker
 curl -sS <worker-url>/docker-run
+curl -sS <worker-url>/destroy
 ```
 
 Expected behavior:
@@ -31,5 +32,6 @@ Expected behavior:
 - `/processes` shows whether the Docker startup `CMD` is running.
 - `/start-docker` manually starts `/home/rootless/boot-docker-for-dind.sh` and returns process logs.
 - `/docker-run` builds with `--network=host` and runs the image with `--network=host`, returning `Hello from Docker!`.
+- `/destroy` destroys the named Sandbox so the next request starts a fresh container.
 
 Local Wrangler currently fails in this project before Docker is usable inside Sandbox, with no `/var/run/docker.sock` and rootlesskit errors when the startup script is invoked manually.

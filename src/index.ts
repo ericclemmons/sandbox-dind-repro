@@ -18,6 +18,7 @@ export default {
         routes: {
           dockerVersion: "/docker-version",
           dockerRun: "/docker-run",
+          destroy: "/destroy",
           processes: "/processes",
           startDocker: "/start-docker",
         },
@@ -29,7 +30,18 @@ export default {
       return Response.json({ processes });
     }
 
+    if (url.pathname === "/destroy") {
+      await sandbox.destroy();
+      return Response.json({ destroyed: true });
+    }
+
     if (url.pathname === "/start-docker") {
+      const probe = await sandbox.exec("docker version", { timeout: 10_000 });
+
+      if (probe.success) {
+        return Response.json({ alreadyRunning: true, probe });
+      }
+
       const process = await sandbox.startProcess("/home/rootless/boot-docker-for-dind.sh", {
         processId: "dockerd-manual",
         autoCleanup: false,
